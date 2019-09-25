@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+package note;
+
+service Note {
+    rpc ListNotes (NotesRequest) returns (NotesResponse) {}
+}
+
+message NotesRequest {
+    string user_id = 1;
+    SortOption sort = 2;
+}
+
+message NotesResponse {
+    repeated string notes = 1;
+}
+
+message SortOption {
+    string field = 1;
+    string order = 2;
+}
