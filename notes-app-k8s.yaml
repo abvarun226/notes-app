@@ -78,7 +78,8 @@ metadata:
 spec:
   ports:
   - port: 9090
-    name: http
+    protocol: TCP
+    name: grpc
   selector:
     app: note-svc
 ---
@@ -104,7 +105,7 @@ spec:
       serviceAccountName: notes-app
       containers:
       - name: note-svc
-        image: docker.io/abvarun226/notes-app:1.0
+        image: docker.io/abvarun226/notes-app:1.1
         imagePullPolicy: IfNotPresent
         command: ["/bin/note-svc"]
         env:
@@ -144,7 +145,7 @@ spec:
       serviceAccountName: notes-app
       containers:
       - name: note-svc
-        image: docker.io/abvarun226/notes-app:1.0
+        image: docker.io/abvarun226/notes-app:1.2
         imagePullPolicy: IfNotPresent
         command: ["/bin/note-svc"]
         env:
@@ -180,16 +181,16 @@ spec:
 apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService
 metadata:
-  name: notes-app
+  name: note-api
 spec:
   hosts:
-  - note-api
+  - "*"
   gateways:
   - notes-app-gateway
   http:
   - route:
     - destination:
-        host: note-api
+        host: note-api.default.svc.cluster.local
         port:
           number: 9090
 ---
@@ -198,7 +199,7 @@ kind: DestinationRule
 metadata:
   name: note-svc
 spec:
-  host: note-svc
+  host: note-svc.default.svc.cluster.local
   subsets:
   - name: v1
     labels:
@@ -210,21 +211,22 @@ spec:
 apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService
 metadata:
-  name: notes-app
+  name: note-svc
 spec:
   hosts:
-  - note-svc
+  - note-svc.default.svc.cluster.local
   http:
-  - name: note-svc-v1
-    route:
+  - route:
     - destination:
-        host: note-svc
+        host: note-svc.default.svc.cluster.local
+        port:
+          number: 9090
         subset: v1
       weight: 50
-  - name: note-svc-v2
-    route:
     - destination:
-        host: note-svc
+        host: note-svc.default.svc.cluster.local
+        port:
+          number: 9090
         subset: v2
       weight: 50
 ---
