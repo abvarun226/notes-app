@@ -5,7 +5,7 @@ import (
 	"log"
 	"net/http"
 
-	pb "github.com/abvarun226/notes-app/note-svc/proto"
+	pb "github.com/abvarun226/notes-app/proto"
 	"github.com/go-chi/chi"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
