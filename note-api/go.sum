@@ -4,6 +4,9 @@ github.com/OneOfOne/xxhash v1.2.2/go.mod h1:HSdplMjZKSmBqAxg5vPj2TmRDmfkzw+cTzAE
 github.com/abvarun226/notes-app v1.0.0 h1:j8FQUyeZy/JqU0dNu72vUcuRyk+8db2g6pOq80MT+Ys=
 github.com/abvarun226/notes-app/note-svc v0.0.0-20190925145904-58bb83fa70ac h1:Agcss8DMWM2rZUqNe9gjA1qX7kTWgn0VNIRvhdtYRY4=
 github.com/abvarun226/notes-app/note-svc v0.0.0-20190925145904-58bb83fa70ac/go.mod h1:X8C+5nN9iUJ6fO/DujHmgX5+fAbiAFRhCNtPQuU9poc=
+github.com/abvarun226/notes-app/note-svc v1.0.2/go.mod h1:P3eqgyJCFD5hoY6dMNB80kDLaEeA/IXJrv0UM4Fi5M4=
+github.com/abvarun226/notes-app/proto v1.0.2 h1:0hsfy7iksTbuUc+B9qhyRqBP3AngBzmW2ubL+jAcCPU=
+github.com/abvarun226/notes-app/proto v1.0.2/go.mod h1:dr+A8z86AlbpW+GLEM8vSGjAor8LO3mOD3rNaE80iIU=
 github.com/alecthomas/template v0.0.0-20160405071501-a0175ee3bccc/go.mod h1:LOuyumcjzFXgccqObfd/Ljyb9UuFJ6TxHnclSeseNhc=
 github.com/alecthomas/units v0.0.0-20151022065526-2efee857e7cf/go.mod h1:ybxpYRFXyAe+OPACYpWeL0wqObRcbAqCMya13uyzqw0=
 github.com/armon/consul-api v0.0.0-20180202201655-eb2c6b5be1b6/go.mod h1:grANhF5doyWs3UAsr3K4I6qtAmlQcZDesFNEHPZAzj8=

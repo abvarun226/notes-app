@@ -35,7 +35,7 @@ func main() {
 	svcAddress := viper.GetString("notesvc.address")
 	serverAddress := viper.GetString("server.address")
 
-	// Set up a connection to the server.
+	// Set up a connection to the note-svc server.
 	conn, err := grpc.Dial(svcAddress, grpc.WithInsecure())
 	if err != nil {
 		log.Fatalf("did not connect: %v", err)
