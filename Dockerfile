@@ -4,6 +4,7 @@ RUN apt-get update
 RUN apt-get install -y sudo
 
 ENV GOBIN=/go/bin
+ENV GOPATH=/go
 RUN mkdir -p /go/src /go/bin /go/pkg
 
 ADD . /go/notes-app
