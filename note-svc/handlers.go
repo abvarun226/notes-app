@@ -18,7 +18,7 @@ func (s *Handler) ListNotes(ctx context.Context, in *pb.NotesRequest) (*pb.Notes
 
 	switch in.UserId {
 	case "varun":
-		notes = append(notes, "tutorial on grpc", "tutorial on istio", "tutorial on k8s")
+		notes = append(notes, "tutorial on grpc", "tutorial on istio", "tutorial on k8s", "istio tutorial v2")
 	case "ayada":
 		notes = append(notes, "tutorial on python", "tutorial on golang")
 	default:
