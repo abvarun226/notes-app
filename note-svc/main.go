@@ -31,7 +31,7 @@ func main() {
 
 	serverAddress := viper.GetString("server.address")
 
-	srv, err := net.Listen("tcp", ServerAddress)
+	srv, err := net.Listen("tcp", serverAddress)
 	if err != nil {
 		log.Fatalf("failed to listen: %v", err)
 	}

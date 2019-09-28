@@ -1,0 +1,157 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: notes-app
+---
+apiVersion: v1
+data:
+  notes.yaml: |
+    notesvc:
+      address: "note-svc:9090"
+kind: ConfigMap
+metadata:
+  name: notes-config
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: note-api
+  labels:
+    app: note-api
+    service: note-api
+spec:
+  ports:
+  - port: 9090
+    name: http
+  selector:
+    app: note-api
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: note-api
+  labels:
+    app: note-api
+    version: v1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: note-api
+      version: v1
+  template:
+    metadata:
+      labels:
+        app: note-api
+        version: v1
+    spec:
+      serviceAccountName: notes-app
+      containers:
+      - name: note-api
+        image: docker.io/abvarun226/notes-app:1.0
+        imagePullPolicy: IfNotPresent
+        command: ["/bin/note-api"]
+        env:
+        - name: SERVER_ADDRESS
+          value: ":9090"
+        - name: NOTESVC_ADDRESS
+          value: "note-svc:9090"
+        ports:
+        - containerPort: 9090
+        volumeMounts:
+        - name: config
+          mountPath: /notes.yaml
+          subPath: notes.yaml
+          readOnly: true
+      volumes:
+      - name: config
+        configMap:
+          name: notes-config
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: note-svc
+  labels:
+    app: note-svc
+    service: note-svc
+spec:
+  ports:
+  - port: 9090
+    name: http
+  selector:
+    app: note-svc
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: note-svc
+  labels:
+    app: note-svc
+    version: v1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: note-svc
+      version: v1
+  template:
+    metadata:
+      labels:
+        app: note-svc
+        version: v1
+    spec:
+      serviceAccountName: notes-app
+      containers:
+      - name: note-svc
+        image: docker.io/abvarun226/notes-app:1.0
+        imagePullPolicy: IfNotPresent
+        command: ["/bin/note-svc"]
+        env:
+          - name: SERVER_ADDRESS
+            value: ":9090"
+        ports:
+        - containerPort: 9090
+        volumeMounts:
+        - name: config
+          mountPath: /notes.yaml
+          subPath: notes.yaml
+          readOnly: true
+      volumes:
+      - name: config
+        configMap:
+          name: notes-config
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: notes-app-gateway
+spec:
+  selector:
+    istio: ingressgateway # use istio default controller
+  servers:
+  - port:
+      number: 80
+      name: http
+      protocol: HTTP
+    hosts:
+    - "*"
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: notes-app
+spec:
+  hosts:
+  - "*"
+  gateways:
+  - notes-app-gateway
+  http:
+  - match:
+    - uri:
+        prefix: /note/v1/notes/
+    route:
+    - destination:
+        host: note-api
+        port:
+          number: 9090
